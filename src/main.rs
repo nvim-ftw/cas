@@ -60,6 +60,7 @@ impl From<Term> for ExpressionNode {
     }
 }
 
+#[derive(Debug)]
 struct Equation {
     left: ExpressionNode,
     right: ExpressionNode,
@@ -108,4 +109,10 @@ parser! {
     nodeterm: t=term -> ExpressionNode { t.into() }
     parens = ("(" add ")" | nodeterm) -> ExpressionNode;
     pub expression = add -> ExpressionNode;
+    pub equation: left=expression sep "=" sep right=expression -> Equation {
+        Equation {
+            left,
+            right,
+        }
+    }
 }
